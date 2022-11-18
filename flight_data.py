@@ -8,7 +8,7 @@ class FlightData(DataManager):
         self.cities = self.refresh_cities()
         self.api_endpoint = "https://api.tequila.kiwi.com/"
         self.api_location = "locations/query"
-        self.api_key = "jZHpK58aAdMsSr5jifG_W-60ErXn1bLu"
+        self.api_key = "********"
         self.headers = {
             "apikey": self.api_key
         }

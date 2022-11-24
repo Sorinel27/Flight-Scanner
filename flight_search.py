@@ -1,6 +1,6 @@
 import requests
 import datetime
-from data_manager import DataManager
+import time
 from flight_data import FlightData
 
 
@@ -12,6 +12,8 @@ class FlightSearch(FlightData):
         self.day_now = self.today.strftime("%d/%m/%Y")
         self.date_to = "30/09/2023"
         self.price_list = []
+        self.money = 99999999
+        self.sms = ""
         for i in range(len(self.IATA_list)):
             self.parameters = {
                 "fly_from": "CLJ",
@@ -29,9 +31,15 @@ class FlightSearch(FlightData):
             }
             self.response = requests.get(url=self.api_endpoint, params=self.parameters, headers=self.headers)
             self.data = self.response.json()
-            print(self.cities[i])
-            print(self.data)
-            self.price_list.append(self.data['data'][0]['price'])
+            cheap_flight_data = self.data['data'][0]
+            if int(cheap_flight_data['price']) < self.money:
+                self.money = int(cheap_flight_data['price'])
+                final_result = self.data['data'][0]
+            time.sleep(2)
+            try:
+                self.price_list.append(self.data['data'][0]['price'])
+            except KeyError:
+                pass
             new_data = {
                 "price": {
                     'city': self.cities[i],
@@ -39,5 +47,6 @@ class FlightSearch(FlightData):
                     'lowestPrice': self.data['data'][0]['price']
                 }
             }
-            self.response = requests.put(url=f"https://api.sheety.co/2ea6a3db5160e5151243478f56fd811d/flightDeals/prices/{i + 2}", json=new_data)
+            self.response = requests.put(url=f"https://api.sheety.co/9bce717d4d00503b99ac5554c9944ba9/flightDeals/prices/{i + 2}", json=new_data)
             print(self.response.text)
+        self.sms = f"Low price alert! Only {final_result['price']} RON to fly from {final_result['cityFrom']}-{final_result['flyFrom']} to {final_result['cityTo']}-{final_result['flyTo']}, from {final_result['route'][0]['local_departure'].split('T')[0]} to {final_result['route'][1]['local_departure'].split('T')[0]}."

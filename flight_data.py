@@ -1,4 +1,5 @@
 import requests
+import time
 from data_manager import DataManager
 
 
@@ -8,7 +9,7 @@ class FlightData(DataManager):
         self.cities = self.refresh_cities()
         self.api_endpoint = "https://api.tequila.kiwi.com/"
         self.api_location = "locations/query"
-        self.api_key = "********"
+        self.api_key = ":)"
         self.headers = {
             "apikey": self.api_key
         }
@@ -27,12 +28,14 @@ class FlightData(DataManager):
                     'lowestPrice': ""
                 }
             }
-            self.response = requests.put(url=f"https://api.sheety.co/2ea6a3db5160e5151243478f56fd811d/flightDeals/prices/{i + 2}", json=new_data)
+            self.response = requests.put(url=f"https://api.sheety.co/9bce717d4d00503b99ac5554c9944ba9/flightDeals/prices/{i + 2}", json=new_data)
         self.response = requests.get(url=f"{self.api_endpoint}{self.api_location}", headers=self.headers,
                                      params=self.parameters)
 
     def get_IATA(self):
+        time.sleep(2)
         self.response = requests.get(url=f"{self.api_endpoint}{self.api_location}", headers=self.headers,
                                      params=self.parameters)
         data = self.response.json()
+        print(data)
         return data['locations'][0]['code']

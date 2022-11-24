@@ -1,8 +1,7 @@
-import requests
 from data_manager import DataManager
 from flight_data import FlightData
 from flight_search import FlightSearch
-
+from notification_manager import NotificationManager
 
 data = DataManager()
 print("Welcome to the Flight Scanner!")
@@ -15,3 +14,4 @@ if another_city.lower() == "y":
     data.add_city(another_city)
 fd = FlightData()
 fs = FlightSearch()
+notification = NotificationManager()

@@ -37,5 +37,4 @@ class FlightData(DataManager):
         self.response = requests.get(url=f"{self.api_endpoint}{self.api_location}", headers=self.headers,
                                      params=self.parameters)
         data = self.response.json()
-        print(data)
         return data['locations'][0]['code']

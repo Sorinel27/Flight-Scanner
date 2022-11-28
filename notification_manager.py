@@ -13,7 +13,7 @@ class NotificationManager(FlightSearch):
         self.message = self.client.messages.create(
             body=self.sms,
             from_='+16293483487',
-            to='+40761468119'
+            to='+40761***'
         )
         print(self.message.status)
 
